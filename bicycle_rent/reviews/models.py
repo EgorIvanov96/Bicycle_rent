@@ -16,6 +16,9 @@ class Bike(models.Model):
     price = models.IntegerField(
         verbose_name='Стоимость аренды велосипеда за минуту, руб'
     )
+    free = models.BooleanField(
+        default=True,
+        verbose_name='Статус велосипеда')
 
     class Meta:
         verbose_name = 'Велосипед'

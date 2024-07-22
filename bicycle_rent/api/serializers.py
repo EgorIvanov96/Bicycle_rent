@@ -19,7 +19,8 @@ class BikeSerialiser(serializers.ModelSerializer):
         model = Bike
         fields = ('name',
                   'description',
-                  'price')
+                  'price',
+                  'free')
 
 
 class RentalSerialiser(serializers.ModelSerializer):

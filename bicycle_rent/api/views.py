@@ -13,5 +13,5 @@ class UserCustomViewSet(UserViewSet):
 
 
 class BikeViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Bike.objects.all()
+    queryset = Bike.objects.filter(free=True)
     serializer_class = BikeSerialiser
