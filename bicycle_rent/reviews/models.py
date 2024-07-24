@@ -52,7 +52,13 @@ class Rental(models.Model):
     total = models.DecimalField(
         verbose_name='Сумма аренды',
         max_digits=8,
-        decimal_places=2
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    condition = models.BooleanField(
+        default=True,
+        verbose_name='Арендован'
     )
 
     class Meta:

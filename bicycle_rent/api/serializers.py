@@ -9,7 +9,8 @@ class UserSerialiser(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = (all,)
+        fields = ('username', 'email')
+        # fields = '__all__'
 
 
 class BikeSerialiser(serializers.ModelSerializer):
@@ -17,10 +18,7 @@ class BikeSerialiser(serializers.ModelSerializer):
 
     class Meta:
         model = Bike
-        fields = ('name',
-                  'description',
-                  'price',
-                  'free')
+        fields = '__all__'
 
 
 class RentalSerialiser(serializers.ModelSerializer):
@@ -28,4 +26,4 @@ class RentalSerialiser(serializers.ModelSerializer):
 
     class Meta:
         model = Rental
-        fields = (all, )
+        fields = '__all__'
