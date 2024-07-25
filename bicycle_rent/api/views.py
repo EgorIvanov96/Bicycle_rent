@@ -97,3 +97,11 @@ class PassBikeViewSet(APIView):
             f'Вы вернули велосипед. Сумма аренды велосипеда { rental.total:.2F} руб',
             status=status.HTTP_200_OK
         )
+
+
+class HistoryViewSet(APIView):
+    def post(self, request):
+        user = request.user
+        rentals = Rental.objects.filter(user=user)
+        serializer = RentalSerialiser(rentals, many=True)
+        return Response(serializer.data)
