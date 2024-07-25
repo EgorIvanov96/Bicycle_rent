@@ -6,6 +6,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+import datetime
+from django.utils.timezone import make_naive
 
 from .serializers import UserSerialiser, BikeSerialiser, RentalSerialiser
 from users.models import User
@@ -45,6 +47,7 @@ class BikeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class RentBikeViewSet(APIView):
+    """Аренда велосипеда."""
     def post(self, request):
         user = request.user
         if Rental.objects.filter(user=user, condition=False).exists():
@@ -68,3 +71,29 @@ class RentBikeViewSet(APIView):
             {'error': 'Велосипед занят'},
             status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class PassBikeViewSet(APIView):
+    """Возват велосипеда."""
+    def post(self, request):
+        user = request.user
+        bike_id = request.data.get('bike_id')
+        bike = get_object_or_404(Bike, id=bike_id)
+        rental = get_object_or_404(
+            Rental,
+            user=user,
+            bike=bike,
+            condition=False)
+        rental.condition = True
+        rental.end_time = datetime.datetime.now()
+        rental.save()
+        bike.free = True
+        bike.save()
+        rental.start_time = make_naive(rental.start_time)
+        time_diff = rental.end_time - rental.start_time
+        rental.total = time_diff.total_seconds() / 3600 * bike.price
+        rental.save()
+        return Response(
+            f'Вы вернули велосипед. Сумма аренды велосипеда { rental.total:.2F} руб',
+            status=status.HTTP_200_OK
+        )

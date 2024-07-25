@@ -44,7 +44,7 @@ class Rental(models.Model):
         auto_now_add=True,
         verbose_name='Начало аренды'
     )
-    end_time = models.DateField(
+    end_time = models.DateTimeField(
         null=True,
         blank=True,
         verbose_name='Конец аренды'
